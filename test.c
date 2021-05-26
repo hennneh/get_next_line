@@ -7,10 +7,10 @@
 
 int	main(void)
 {
-	printf("%d\n", BUFFER_SIZE);
-	int	fd = open("file1", O_RDONLY);
-	int df = open("file2", O_RDONLY);
-	printf("%d\n", fd);
-	printf("%d\n", df);
+	char **test = "test";
+	printf("buffer size = %d\n", BUFFER_SIZE);
+	int	fd = open("file3", O_RDONLY);
+	printf("fd = %d\n", fd);
+	int a = get_next_line(fd, test);
 	return (0);
 }

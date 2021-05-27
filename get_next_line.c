@@ -14,7 +14,7 @@
 
 int	get_next_line(int fd, char **line)
 {
-	static char	*buff[MAX_READ];
+	static char	buff[BUFFER_SIZE + 1];
 	int			size;
 	int			rtrn;
 

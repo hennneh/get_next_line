@@ -11,17 +11,13 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
-int get_next_line(int fd, char **line)
+int	get_next_line(int fd, char **line)
 {
-	static char	*buff;
+	static char	*buff[MAX_READ];
+	int			size;
+	int			rtrn;
 
-	if (!line || fd < 0 || fd > 4096 || BUFFER_SIZE < 1)
+	if (!line || fd < 0 || fd > MAX_READ || BUFFER_SIZE < 1)
 		return (-1);
-	buff = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	read(fd, buff, BUFFER_SIZE);
-	buff[BUFFER_SIZE + 1] = 0;
-	printf("%s\n", buff);
-	return (1);
 }

@@ -14,10 +14,10 @@
 
 int	get_next_line(int fd, char **line)
 {
-	static char	buff[BUFFER_SIZE + 1];
-	int			size;
-	int			rtrn;
-
-	if (!line || fd < 0 || fd > MAX_READ || BUFFER_SIZE < 1)
-		return (-1);
+	static char	save[MAX_FILES][BUFFER_SIZE + 1];
+	char		buff[BUFFER_SIZE + 1]
+	while (BUFFER_SIZE > 0 && fd >= 0 && line)
+	{
+		
+	}
 }

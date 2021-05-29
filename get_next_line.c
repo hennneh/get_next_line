@@ -11,37 +11,32 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-static int	check_buff(char **buff, char **line)
-{
-	char	*end;
-	char	*tmp;
-
-	if (!buff[fd])
-		buff[fd] = ft_strdup("");
-	if (!buff[fd])
-		return (-1);
-	end = ft_strchr(buff[fd], '\n');
-	if (end)
-	{
-		*end = 0;
-		tmp = *buff;
-		*line = ft_strdup(*buff);
-		*buff = ft_strdup(end + 1);
-		if (!(*buff)
-			return (-1);
-		free(tmp);
-		return (1);
-	}
-	return (0);
-}
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 int	get_next_line(int fd, char **line)
 {
 	static char	buff[MAX_FILES][BUFFER_SIZE];
-	int			i;
+	ssize_t		i;
 
-	if (BUFFER_SIZE < 1 || fd < 0 || fd > MAX_FILES || !line)
+	if (BUFFER_SIZE < 1 || fd < 0 || fd > MAX_FILES)
 		return (-1);
-	i = check_buff(&buff[fd], line);
+	i = read(fd, buff[fd], BUFFER_SIZE);
+//checking if read worked and everything is stored in the 2d-array
+	printf("%s\n", buff[fd]);
+	return (0);
+}
+
+int     main(void)
+{
+        char **line;
+        printf("buffer size = %d\n", BUFFER_SIZE);
+        int     fd = open("file3", O_RDONLY);
+        printf("fd = %d\n", fd);
+        int a = get_next_line(fd, line);
+        return (0);
 }

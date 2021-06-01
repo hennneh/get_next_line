@@ -28,7 +28,7 @@ static int	ft_join(int fd, char **buff, char **line, int readcount, int j)
 static int	ft_line_check(int fd, char **buff, char **line, int readcount)
 {
 	int	i;
-	int j;
+	int	j;
 
 	j = 0;
 	i = 0;
@@ -41,8 +41,9 @@ static int	ft_line_check(int fd, char **buff, char **line, int readcount)
 		if (!*line)
 			*line = ft_strdup(buff[fd]);
 		else
-			j = ft_join(fd, **buff, **line, readcount, j);
+			j = ft_join(fd, buff, line, readcount, j);
 	}
+	return (0);
 }
 
 static int	ft_nl_check(int fd, char **buff, char **line)
@@ -77,7 +78,8 @@ int	get_next_line(int fd, char **line)
 		else
 			*line = ft_strdup(buff[fd]);
 	}
+	readcount = 0;
 	buff[fd] = ft_strdup("");
 	check = ft_line_check(fd, buff, line, readcount);
-	return (readcount);
+	return (readcount + check);
 }

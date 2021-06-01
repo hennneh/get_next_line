@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
 static char	*ft_strdup(const char *s1)
 {
@@ -40,6 +41,7 @@ static int	ft_nl_check(int fd, char **buff, char **line)
 		if (!buff[fd][i])
 			return (0);
 	}
+	buff[fd][i] = '\0';
 	*line = ft_strdup(buff[fd]);
 	return (1);
 }
@@ -51,9 +53,18 @@ int	get_next_line(int fd, char **line)
 
 	if (BUFFER_SIZE < 1 || fd < 0 || fd > MAX_OPEN || !line)
 		return (-1);
+	buff[fd] = ft_strdup("there is something inside of buff");
 	if (buff[fd])
+	{
 		if (ft_nl_check(fd, buff, line))
 			return (0);
+		else
+			*line = ft_strdup(buff[fd]);
+	}
+	buff[fd] = ft_strdup("");
 	readcount = read(fd, buff[fd], BUFFER_SIZE);
+	printf("buff[fd] = %s\n", buff[fd]);
+	readcount = read(fd, buff[fd], BUFFER_SIZE);
+	printf("buff[fd] = %s\n", buff[fd]);
 	return (1);
 }

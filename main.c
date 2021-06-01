@@ -19,6 +19,6 @@ int	main(void)
 	printf("return-value of gnl = %d\n", a);
 	printf("\n%s\n", line);
 	a = get_next_line(fd, &line);
-	printf("\n%s\n", line);
+	printf("%s\n", line);
 	return (0);
 }

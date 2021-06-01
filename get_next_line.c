@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlehmann <hlehmann@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: hlehmann <hlehmann@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 16:54:48 by hlehmann          #+#    #+#             */
 /*   Updated: 2021/02/13 16:57:26 by hlehmann         ###   ########.fr       */
@@ -21,6 +21,7 @@ static char	*ft_strdup(const char *s1)
 	i = 0;
 	while (s1[i])
 		i += 1;
+//neeed to fix this stupid issue with norminette!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	if (!(s2 = (char *)malloc(sizeof(char) * (i + 1))))
 		return (NULL);
 	i = -1;
@@ -43,6 +44,7 @@ static int	ft_nl_check(int fd, char **buff, char **line)
 	}
 	buff[fd][i] = '\0';
 	*line = ft_strdup(buff[fd]);
+	buff[fd] = ft_strdup(buff[fd] + i + 1);
 	return (1);
 }
 
@@ -53,7 +55,7 @@ int	get_next_line(int fd, char **line)
 
 	if (BUFFER_SIZE < 1 || fd < 0 || fd > MAX_OPEN || !line)
 		return (-1);
-	buff[fd] = ft_strdup("there is something inside of buff");
+	buff[fd] = ft_strdup("test1\ntest2");
 	if (buff[fd])
 	{
 		if (ft_nl_check(fd, buff, line))

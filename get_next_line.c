@@ -13,6 +13,38 @@
 #include "get_next_line.h"
 #include <stdio.h>
 
+static int	ft_join(int fd, char **buff, char **line, int readcount, int j)
+{
+	char	*dest;
+
+	dest = malloc(sizeof(char) * (j + readcount + 1));
+	ft_memcpy(dest, *line, j);
+	ft_memcpy(&dest[j], buff[fd], readcount);
+	dest[j + readcount] = '\0';
+	*line = dest;
+	return (j + readcount);
+}
+
+static int	ft_line_check(int fd, char **buff, char **line, int readcount)
+{
+	int	i;
+	int j;
+
+	j = 0;
+	i = 0;
+	readcount = read(fd, buff[fd], BUFFER_SIZE);
+	while (i < readcount && buff[fd][i] != '\n')
+		i++;
+	if (buff[fd][i] == '\n')
+	{
+		buff[fd][i] = '\0';
+		if (!*line)
+			*line = ft_strdup(buff[fd]);
+		else
+			j = ft_join(fd, **buff, **line, readcount, j);
+	}
+}
+
 static int	ft_nl_check(int fd, char **buff, char **line)
 {
 	int		i;
@@ -46,9 +78,6 @@ int	get_next_line(int fd, char **line)
 			*line = ft_strdup(buff[fd]);
 	}
 	buff[fd] = ft_strdup("");
-	readcount = read(fd, buff[fd], BUFFER_SIZE);
-	if (readcount == 0)
-		return (0);
 	check = ft_line_check(fd, buff, line, readcount);
-	return (1);
+	return (readcount);
 }

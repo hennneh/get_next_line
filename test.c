@@ -28,20 +28,23 @@ static char     *ft_strdup(const char *s)
 
 int main(void)
 {
-	char *temp;
-	temp = ft_strdup("");
+	char temp[6];
+	int i;
 	int bs = 5;
 	int fd = open("file4", O_RDONLY);
 	int readcount = read(fd, temp, bs);
 	printf("%d\n", readcount);
-//	printf("%s\n", temp);
+	printf("%s\n", temp);
 	printf("first read finished\n");
-	readcount = read(fd, temp, bs);
+	while (temp[i])
+		i++;
+	printf("%d", i);
+/*	readcount = read(fd, temp, bs);
 	printf("%d\n", readcount);
-//	printf("%s\n", temp);
+	printf("%s\n", temp);
 	printf("second read finished\n");
 	readcount = read(fd, temp, bs);
 	printf("%d\n", readcount);
-//	printf("%s\n", temp);
-	return (0);
+	printf("%s\n", temp);
+	return (0);*/
 }

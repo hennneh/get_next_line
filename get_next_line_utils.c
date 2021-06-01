@@ -12,6 +12,26 @@
 
 #include "get_next_line.h"
 
+char	*ft_strdup(const char *s)
+{
+	char	*dest;
+	size_t	i;
+	size_t	len;
+
+	len = 0;
+	while (s[len] != '\0')
+		len++;
+	dest = (char *)malloc(sizeof(*s) * (len + 1));
+	i = 0;
+	while (len > i)
+	{
+		dest[i] = s[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
+
 static void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
 	size_t			i;

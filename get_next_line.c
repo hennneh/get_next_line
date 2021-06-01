@@ -12,10 +12,26 @@
 
 #include "get_next_line.h"
 
+static char	*ft_strdup(const char *s1)
+{
+	char		*s2;
+	size_t		i;
+
+	i = 0;
+	while (s1[i])
+		i += 1;
+	if (!(s2 = (char *)malloc(sizeof(char) * (i + 1))))
+		return (NULL);
+	i = -1;
+	while (s1[++i])
+		s2[i] = s1[i];
+	s2[i] = '\0';
+	return (s2);
+}
+
 static int	ft_nl_check(int fd, char **buff, char **line)
 {
 	int		i;
-	char	*temp;
 
 	i = 0;
 	while (buff[fd][i] != '\n')
@@ -24,7 +40,8 @@ static int	ft_nl_check(int fd, char **buff, char **line)
 		if (!buff[fd][i])
 			return (0);
 	}
-	
+	*line = ft_strdup(buff[fd]);
+	return (1);
 }
 
 int	get_next_line(int fd, char **line)
@@ -35,6 +52,8 @@ int	get_next_line(int fd, char **line)
 	if (BUFFER_SIZE < 1 || fd < 0 || fd > MAX_OPEN || !line)
 		return (-1);
 	if (buff[fd])
-		(if ft_nl_check(fd, buff, line))
-			return (1);
+		if (ft_nl_check(fd, buff, line))
+			return (0);
+	readcount = read(fd, buff[fd], BUFFER_SIZE);
+	return (1);
 }

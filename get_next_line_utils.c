@@ -11,14 +11,3 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-int	get_next_line(int fd, char **line)
-{
-//	static char	*buff[MAX_OPEN];
-	int			readcount;
-
-	if (BUFFER_SIZE < 1 || fd < 0 || fd > MAX_OPEN || !line)
-		return (-1);
-	readcount = read(fd, *line, BUFFER_SIZE);
-	return (readcount);
-}

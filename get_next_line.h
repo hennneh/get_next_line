@@ -20,10 +20,10 @@
 # define BUFFER_SIZE 32
 # endif 
 
-# ifndef MAX_FILES
-# define MAX_FILES 1024
+# ifndef MAX_OPEN
+# define MAX_OPEN 1024
 # endif
 
-int	get_next_line(int fd, char **line);
+int		get_next_line(int fd, char **line);
 
 #endif

@@ -16,12 +16,29 @@
 static int	ft_join(int fd, char **buff, char **line, int readcount, int j)
 {
 	char	*dest;
+	int		i;
+	int		k;
 
+	k = 0;
+	i = 0;
 	dest = malloc(sizeof(char) * (j + readcount + 1));
 	ft_memcpy(dest, *line, j);
 	ft_memcpy(&dest[j], buff[fd], readcount);
-	dest[j + readcount] = '\0';
+	dest[j + readcount + 1] = '\0';
 	*line = dest;
+	while (i < readcount && buff[fd][i])
+		i++;
+	if (buff[fd][i] == '\0')
+	{
+		i++;
+		while (i < readcount)
+		{
+			buff[fd][k] = buff[fd][i];
+			i++;
+			k++;
+		}
+		buff[fd][k] = '\0';
+	}
 	return (j + readcount);
 }
 
@@ -32,26 +49,28 @@ static int	ft_line_check(int fd, char **buff, char **line, int readcount)
 	int	check;
 
 	check = 1;
-	j = 0;
+	j = ft_strlen(*line);
 	while (check == 1)
 	{
 		i = 0;
 		readcount = read(fd, buff[fd], BUFFER_SIZE);
+		if (readcount == 0)
+			return (0);
 		while (i < readcount)
 		{
 			if (buff[fd][i] == '\n')
 			{
 				check = 0;
 				buff[fd][i] = '\0';
-//				if (!*line)
-//					*line = ft_strdup(buff[fd]);
+				if (!*line)
+					*line = ft_strdup(buff[fd]);
 				break ;
 			}
 			i++;
 		}
 		j = ft_join(fd, buff, line, readcount, j);
 	}
-	return (0);
+	return (1);
 }
 
 static int	ft_nl_check(int fd, char **buff, char **line)
@@ -79,6 +98,7 @@ int	get_next_line(int fd, char **line)
 
 	if (BUFFER_SIZE < 1 || fd < 0 || fd > MAX_OPEN || !line)
 		return (-1);
+	*line = ft_strdup("");
 	if (buff[fd])
 	{
 		if (ft_nl_check(fd, buff, line))
@@ -89,5 +109,5 @@ int	get_next_line(int fd, char **line)
 	readcount = 0;
 	buff[fd] = ft_strdup("");
 	check = ft_line_check(fd, buff, line, readcount);
-	return (readcount + check);
+	return (check);
 }

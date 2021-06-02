@@ -33,21 +33,23 @@ static int	ft_line_check(int fd, char **buff, char **line, int readcount)
 
 	check = 1;
 	j = 0;
-	i = 0;
 	while (check == 1)
 	{
+		i = 0;
 		readcount = read(fd, buff[fd], BUFFER_SIZE);
-		while (i < readcount && buff[fd][i] != '\n')
-			i++;
-		if (buff[fd][i] == '\n')
+		while (i < readcount)
 		{
-			check = 0;
-			buff[fd][i] = '\0';
-			if (!*line)
-				*line = ft_strdup(buff[fd]);
-			else
-				j = ft_join(fd, buff, line, readcount, j);
+			if (buff[fd][i] == '\n')
+			{
+				check = 0;
+				buff[fd][i] = '\0';
+//				if (!*line)
+//					*line = ft_strdup(buff[fd]);
+				break ;
+			}
+			i++;
 		}
+		j = ft_join(fd, buff, line, readcount, j);
 	}
 	return (0);
 }

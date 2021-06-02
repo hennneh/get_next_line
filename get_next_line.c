@@ -18,10 +18,11 @@ static int	ft_join(int fd, char **buff, char **line, int readcount, int j)
 	char	*dest;
 	int		i;
 	int		k;
+	printf("%d %d\n", j, readcount);
 
 	k = 0;
 	i = 0;
-	dest = malloc(sizeof(char) * (j + readcount + 1));
+	dest = (char *)malloc(sizeof(char) * (j + readcount + 1));
 	ft_memcpy(dest, *line, j);
 	ft_memcpy(&dest[j], buff[fd], readcount);
 	dest[j + readcount + 1] = '\0';

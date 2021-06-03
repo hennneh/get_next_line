@@ -1,17 +1,13 @@
 #include "get_next_line.h"
 
-void	ft_bzero(void *s, size_t n)
+size_t	ft_strlen(const char *str)
 {
-	unsigned char	*c;
-	size_t			i;
+	size_t	i;
 
-	c = (unsigned char *)s;
 	i = 0;
-	while (n > i)
-	{
-		c[i] = '\0';
+	while (str[i] != '\0')
 		i++;
-	}
+	return (i);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)

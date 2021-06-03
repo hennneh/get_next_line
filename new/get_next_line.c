@@ -1,28 +1,7 @@
 #include "get_next_line.h"
 #include <stdio.h>
 
-size_t	ft_strlen(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
-
-void	*ft_calloc(size_t nmemb, size_t size)
-{
-	void	*dest;
-
-	dest = (void *)malloc(nmemb * size);
-	if (!dest)
-		return (NULL);
-	ft_bzero(dest, nmemb * size);
-	return (dest);
-}
-
-char	*ft_write_to_line(char *ret, char **line, int bytes_read)
+static char	*ft_write_to_line(char *ret, char **line, int bytes_read)
 {
 	unsigned int	i;
 	char			*tmp;
@@ -50,7 +29,7 @@ char	*ft_write_to_line(char *ret, char **line, int bytes_read)
 	return (ret);
 }
 
-char	*ft_join_ret(char *buffer, char *ret)
+static char	*ft_join_ret(char *buffer, char *ret)
 {
 	char	*tmp;
 

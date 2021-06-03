@@ -1,32 +1,5 @@
 #include "new.h"
 
-void	*ft_memcpy(void *dest, const void *src, size_t n)
-{
-	size_t			i;
-	unsigned char	*s;
-	unsigned char	*d;
-
-	i = 0;
-	s = (unsigned char *)src;
-	d = (unsigned char *)dest;
-	while (n > i)
-	{
-		d[i] = s[i];
-		i++;
-	}
-	return (dest);
-}
-
-size_t	ft_strlen(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
-
 void	ft_bzero(void *s, size_t n)
 {
 	unsigned char	*c;
@@ -100,19 +73,26 @@ char	*ft_strchr(const char *s, int c)
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	size_t	len1;
-	size_t	len2;
-	char	*dest;
+	char	*str;
+	size_t	i;
+	size_t	j;
 
-	if (!s1 || !s2)
+	str = (char *)malloc(sizeof(*s1) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!str)
 		return (NULL);
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	dest = malloc(sizeof(char) * (len1 + len2 + 1));
-	if (!dest)
-		return (NULL);
-	ft_memcpy(dest, s1, len1);
-	ft_memcpy(&dest[len1], s2, len2);
-	dest[len1 + len2] = '\0';
-	return (dest);
+	i = 0;
+	j = 0;
+	while (s1[i])
+	{
+		str[j++] = s1[i];
+		i++;
+	}
+	i = 0;
+	while (s2[i])
+	{
+		str[j++] = s2[i];
+		i++;
+	}
+	str[j] = 0;
+	return (str);
 }

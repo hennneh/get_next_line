@@ -1,6 +1,16 @@
 #include "new.h"
 #include <stdio.h>
 
+size_t	ft_strlen(const char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+	return (i);
+}
+
 void	*ft_calloc(size_t nmemb, size_t size)
 {
 	void	*dest;
@@ -18,7 +28,7 @@ char	*ft_write_to_line(char *ret, char **line, int bytes_read)
 	char			*tmp;
 
 	i = 0;
-	while(ret[i])
+	while (ret[i])
 	{
 		if (ret[i] == '\n')
 			break ;
@@ -28,7 +38,7 @@ char	*ft_write_to_line(char *ret, char **line, int bytes_read)
 	{
 		*line = ft_substr(ret, 0, i);
 		tmp = ft_substr(ret, i + 1, ft_strlen(ret));
-		free(ret) ;
+		free(ret);
 		ret = ft_strdup(tmp);
 		free (tmp);
 	}
@@ -81,5 +91,5 @@ int	get_next_line(int fd, char **line)
 	ret = ft_write_to_line(ret, line, bytes_read);
 	if (bytes_read <= 0 && !ret)
 		return (bytes_read);
-	return  (1);
+	return (1);
 }

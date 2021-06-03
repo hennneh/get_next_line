@@ -54,7 +54,7 @@ int	get_next_line(int fd, char **line)
 	bytes_read = read(fd, buffer, BUFFER_SIZE);
 	while ((bytes_read))
 	{
-		if (bytes_read == -1)
+		if (bytes_read < 0)
 			return (-1);
 		buffer[bytes_read] = '\0';
 		ret = ft_join_ret(buffer, ret);

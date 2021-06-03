@@ -1,2 +1,2 @@
-all: get_next_line.c get_next_line_utils.c main.c
-	gcc -O0 -Wall -Werror -Wextra -D BUFFER_SIZE=2 get_next_line.c get_next_line_utils.c main.c
+all: new.c new_utils.c main.c
+	gcc -Wall -Werror -Wextra -D BUFFER_SIZE=99999 new.c new_utils.c main.c

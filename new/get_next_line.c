@@ -46,7 +46,7 @@ static char	*ft_join(char *temp, char *buff)
 
 int	get_next_line(int fd, char **line)
 {
-	static char	*buff;
+	static char	*buff[MAX_FD];
 	char		temp[BUFFER_SIZE + 1];
 	int			readcount;
 
@@ -56,18 +56,18 @@ int	get_next_line(int fd, char **line)
 		if (readcount == -1)
 			return (-1);
 		temp[readcount] = '\0';
-		buff = ft_join(temp, buff);
+		buff[fd] = ft_join(temp, buff[fd]);
 		if (ft_strchr(temp, '\n'))
 			break ;
 		readcount = read(fd, temp, BUFFER_SIZE);
 	}
-	if (readcount < 1 && !buff)
+	if (readcount < 1 && !buff[fd])
 	{
 		*line = ft_strdup("");
 		return (readcount);
 	}
-	buff = ft_line(buff, line, readcount);
-	if (readcount <= 0 && !buff)
+	buff[fd] = ft_line(buff[fd], line, readcount);
+	if (readcount <= 0 && !buff[fd])
 		return (readcount);
 	return (1);
 }

@@ -1,6 +1,6 @@
 #include "get_next_line.h"
 
-static char	*ft_write_to_line(char *buff, char **line, int readcount)
+static char	*ft_line(char *buff, char **line, int readcount)
 {
 	unsigned int	i;
 	char			*str;
@@ -28,7 +28,7 @@ static char	*ft_write_to_line(char *buff, char **line, int readcount)
 	return (buff);
 }
 
-static char	*ft_join_buff(char *temp, char *buff)
+static char	*ft_join(char *temp, char *buff)
 {
 	char	*str;
 
@@ -56,17 +56,17 @@ int	get_next_line(int fd, char **line)
 		if (readcount == -1)
 			return (-1);
 		temp[readcount] = '\0';
-		buff = ft_join_buff(temp, buff);
+		buff = ft_join(temp, buff);
 		if (ft_strchr(temp, '\n'))
 			break ;
 		readcount = read(fd, temp, BUFFER_SIZE);
 	}
-	if (readcount <= 0 && !buff)
+	if (readcount < 1 && !buff)
 	{
 		*line = ft_strdup("");
 		return (readcount);
 	}
-	buff = ft_write_to_line(buff, line, readcount);
+	buff = ft_line(buff, line, readcount);
 	if (readcount <= 0 && !buff)
 		return (readcount);
 	return (1);

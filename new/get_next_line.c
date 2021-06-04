@@ -1,74 +1,73 @@
 #include "get_next_line.h"
-#include <stdio.h>
 
-static char	*ft_write_to_line(char *ret, char **line, int bytes_read)
+static char	*ft_write_to_line(char *buff, char **line, int readcount)
 {
 	unsigned int	i;
-	char			*tmp;
+	char			*str;
 
 	i = 0;
-	while (ret[i])
+	while (buff[i])
 	{
-		if (ret[i] == '\n')
+		if (buff[i] == '\n')
 			break ;
 		i++;
 	}
-	if (i < ft_strlen(ret))
+	if (i < ft_strlen(buff))
 	{
-		*line = ft_substr(ret, 0, i);
-		tmp = ft_substr(ret, i + 1, ft_strlen(ret));
-		free(ret);
-		ret = ft_strdup(tmp);
-		free (tmp);
+		*line = ft_substr(buff, 0, i);
+		str = ft_substr(buff, i + 1, ft_strlen(buff));
+		free(buff);
+		buff = ft_strdup(str);
+		free (str);
 	}
-	else if (bytes_read == 0)
+	else if (readcount == 0)
 	{
-		*line = ret;
-		ret = NULL;
+		*line = buff;
+		buff = NULL;
 	}
-	return (ret);
+	return (buff);
 }
 
-static char	*ft_join_ret(char *buffer, char *ret)
+static char	*ft_join_buff(char *temp, char *buff)
 {
-	char	*tmp;
+	char	*str;
 
-	if (ret)
+	if (buff)
 	{
-		tmp = ft_strjoin(ret, buffer);
-		free(ret);
-		ret = ft_strdup(tmp);
-		free(tmp);
+		str = ft_strjoin(buff, temp);
+		free(buff);
+		buff = ft_strdup(str);
+		free(str);
 	}
 	else
-		ret = ft_strdup(buffer);
-	return (ret);
+		buff = ft_strdup(temp);
+	return (buff);
 }
 
 int	get_next_line(int fd, char **line)
 {
-	static char	*ret;
-	char		buffer[BUFFER_SIZE + 1];
-	int			bytes_read;
+	static char	*buff;
+	char		temp[BUFFER_SIZE + 1];
+	int			readcount;
 
-	bytes_read = read(fd, buffer, BUFFER_SIZE);
-	while ((bytes_read))
+	readcount = read(fd, temp, BUFFER_SIZE);
+	while ((readcount))
 	{
-		if (bytes_read < 0)
+		if (readcount == -1)
 			return (-1);
-		buffer[bytes_read] = '\0';
-		ret = ft_join_ret(buffer, ret);
-		if (ft_strchr(buffer, '\n'))
+		temp[readcount] = '\0';
+		buff = ft_join_buff(temp, buff);
+		if (ft_strchr(temp, '\n'))
 			break ;
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		readcount = read(fd, temp, BUFFER_SIZE);
 	}
-	if (bytes_read <= 0 && !ret)
+	if (readcount <= 0 && !buff)
 	{
 		*line = ft_strdup("");
-		return (bytes_read);
+		return (readcount);
 	}
-	ret = ft_write_to_line(ret, line, bytes_read);
-	if (bytes_read <= 0 && !ret)
-		return (bytes_read);
+	buff = ft_write_to_line(buff, line, readcount);
+	if (readcount <= 0 && !buff)
+		return (readcount);
 	return (1);
 }

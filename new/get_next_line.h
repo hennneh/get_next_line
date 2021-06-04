@@ -8,6 +8,8 @@
 #  define BUFFER_SIZE 32
 # endif
 
+# define MAX_FD 1024
+
 int		get_next_line(int fd, char **line);
 char	*ft_strdup(const char *s);
 char	*ft_substr(char const *s, unsigned int start, size_t len);

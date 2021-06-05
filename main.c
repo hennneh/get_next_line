@@ -1,4 +1,4 @@
-#include "new.h"
+#include "get_next_line.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
@@ -13,20 +13,13 @@ int	main(void)
 	int		a;
 
 	printf("buffer size = %d\n", BUFFER_SIZE);
-	fd = open("file3", O_RDONLY);
+	fd = open("file4", O_RDONLY);
 	printf("fd = %d\n", fd);
 	a = 1;
 	while (a > 0)
 	{
 		a = get_next_line(fd, &line);
-		printf("%s\n", line);
+		if (a > 0)
+			printf("%s\n", line);
 	}
-/*
-	a = get_next_line(fd, &line);
-	printf("return-value of gnl = %d\n", a);
-	printf("\n%s\n", line);
-	a = get_next_line(fd, &line);
-	printf("%s\n", line);
-	return (0);
-*/
 }

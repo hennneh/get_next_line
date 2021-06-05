@@ -11,104 +11,87 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
-static int	ft_join(int fd, char **buff, char **line, int readcount, int j)
+static char	*ft_line(char *buff, char **line, int readcount)
 {
-	char	*dest;
-	int		i;
-	int		k;
-	printf("%d %d\n", j, readcount);
-
-	k = 0;
-	i = 0;
-	dest = (char *)malloc(sizeof(char) * (j + readcount + 1));
-	ft_memcpy(dest, *line, j);
-	ft_memcpy(&dest[j], buff[fd], readcount);
-	dest[j + readcount + 1] = '\0';
-	*line = dest;
-	while (i < readcount && buff[fd][i])
-		i++;
-	if (buff[fd][i] == '\0')
-	{
-		i++;
-		while (i < readcount)
-		{
-			buff[fd][k] = buff[fd][i];
-			i++;
-			k++;
-		}
-		buff[fd][k] = '\0';
-	}
-	return (j + readcount);
-}
-
-static int	ft_line_check(int fd, char **buff, char **line, int readcount)
-{
-	int	i;
-	int	j;
-	int	check;
-
-	check = 1;
-	j = ft_strlen(*line);
-	while (check == 1)
-	{
-		i = 0;
-		readcount = read(fd, buff[fd], BUFFER_SIZE);
-		if (readcount == 0)
-			return (0);
-		while (i < readcount)
-		{
-			if (buff[fd][i] == '\n')
-			{
-				check = 0;
-				buff[fd][i] = '\0';
-				if (!*line)
-					*line = ft_strdup(buff[fd]);
-				break ;
-			}
-			i++;
-		}
-		j = ft_join(fd, buff, line, readcount, j);
-	}
-	return (1);
-}
-
-static int	ft_nl_check(int fd, char **buff, char **line)
-{
-	int		i;
+	unsigned int	i;
+	char			*str;
 
 	i = 0;
-	while (buff[fd][i] != '\n')
+	while (buff[i])
 	{
+		if (buff[i] == '\n')
+			break ;
 		i++;
-		if (!buff[fd][i])
-			return (0);
 	}
-	buff[fd][i] = '\0';
-	*line = ft_strdup(buff[fd]);
-	buff[fd] = ft_strdup(buff[fd] + i + 1);
-	return (1);
+	if (i < ft_strlen(buff))
+	{
+		*line = ft_substr(buff, 0, i);
+		str = ft_substr(buff, i + 1, ft_strlen(buff));
+		free(buff);
+		buff = ft_strdup(str);
+		free (str);
+	}
+	else if (readcount == 0)
+	{
+		*line = buff;
+		buff = NULL;
+	}
+	return (buff);
+}
+
+static char	*ft_join(char *temp, char *buff)
+{
+	char	*str;
+
+	if (buff)
+	{
+		str = ft_strjoin(buff, temp);
+		free(buff);
+		buff = ft_strdup(str);
+		free(str);
+	}
+	else
+		buff = ft_strdup(temp);
+	return (buff);
+}
+
+int	ft_check(int fd, char **line, char **buff, char *temp)
+{
+	int			readcount;
+
+	readcount = read(fd, temp, BUFFER_SIZE);
+	while (readcount)
+	{
+		if (readcount == -1)
+			return (-1);
+		temp[readcount] = '\0';
+		buff[fd] = ft_join(temp, buff[fd]);
+		if (ft_strchr(temp, '\n'))
+			break ;
+		readcount = read(fd, temp, BUFFER_SIZE);
+	}
+	if (readcount < 1 && !buff[fd])
+	{
+		*line = ft_strdup("");
+		return (readcount);
+	}
+	buff[fd] = ft_line(buff[fd], line, readcount);
+	if (readcount <= 0 && !buff[fd])
+		return (readcount);
+	return (-2);
 }
 
 int	get_next_line(int fd, char **line)
 {
-	static char	*buff[MAX_OPEN];
-	int			readcount;
+	static char	*buff[MAX_FD];
+	char		temp[BUFFER_SIZE + 1];
 	int			check;
 
-	if (BUFFER_SIZE < 1 || fd < 0 || fd > MAX_OPEN || !line)
+	if (!line || fd < 0 || fd > MAX_FD || BUFFER_SIZE < 0)
 		return (-1);
-	*line = ft_strdup("");
-	if (buff[fd])
-	{
-		if (ft_nl_check(fd, buff, line))
-			return (1);
-		else
-			*line = ft_strdup(buff[fd]);
-	}
-	readcount = 0;
-	buff[fd] = ft_strdup("");
-	check = ft_line_check(fd, buff, line, readcount);
-	return (check);
+	check = ft_check(fd, line, buff, temp);
+	if (check != -2)
+		return (check);
+	return (1);
 }
